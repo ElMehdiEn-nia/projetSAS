@@ -1,14 +1,62 @@
 const prompt = require("prompt-sync")();
-let condidats = {
-    cin : "",
-    nom : "",
-    prénom : "",
-    partiPolitique : "",
+let candidat = [
+    {
+    cin : "M724710",
+    nom : "Baraka",
+    prénom : "Nizar",
+    partiPolitique : "PI",
+    age : 35,
+    votes : 12000},
+    {
+        cin : "M734834",
+        nom : "Bensaid",
+        prénom : "Mehdi",
+        partiPolitique : "PAM",
+        age : 41,
+        votes : 9467},
+    {
+        cin : "K244765",
+        nom : "El Houaichri",
+        prénom : "Abdelkarim",
+        partiPolitique : "PJD",
+        age : 56,
+        votes : 11532},
+    {
+        cin : "k347654",
+        nom : "El Amrani",
+        prénom : "Ali",
+        partiPolitique : "RNI",
+        age : 35,
+        votes : 10854
+    }]
+    
 
-};
 let votes = [];
 let candidats = [];
 let electeurs = [];
+function modifierCandidat(){
+    for (let i = 0; i < candidats.length; i++){
+        if (candidats[i].cin === cin){
+            candidats[i].age = Number(prompt("Entrez le nouvel age :"));
+            candidats[i].parti = prompt("Entrez le nouveau parti politique :");
+            console.log("Candidat modifié avec succès !");
+            return;
+        }
+    }
+    console.log("Candidat non trouvé !");
+}
+function nombreDeVotes(){
+    let total = 0;
+    candidats.forEach(candidat => {total += candidat.votes;});
+    console.log("Nombre total de votes :", total);
+}
+function top3Candidats(){
+    let classement = candidats.sort((a, b) => b.votes - a.votes);
+    console.log("Top 3 candidats :");
+    for (let i = 0; i < Math.min(3, classement.length); i++) {
+    
+    }
+}
 function ajouterCandidat(){
     let cin = prompt("Tapez votre CIN :");
     let age = Number(prompt("Votre age :"));
@@ -29,7 +77,7 @@ function ajouterCandidat(){
         candidats.push(candidat);
         console.log("Candidat ajouté avec succès !");
     } else {
-        console.log("Ce cin a déjà été utilisé, vous ne pouvez pas le réutiliser.");
+        console.log("Candidat avec ce CIN existe déjà !");
     }
 }
 function afficherCIN(){
@@ -61,28 +109,30 @@ function voter(){
     }
 }
 function rechercherUnCandidat(){
-    let candidats = [
-        {nom: "Ennia", prénom: "El Mehdi", cin: "M724710", parti: "Parti de l'Istiqlal"},
-        {nom: "El Maslouhi", prénom: "Rim", cin: "M734834", parti: "Parti de l'Istiqlal"},
-        {nom: "Toumi", prénom: "Youssef", cin: "K244765", parti: "Parti de la Justice et du Développement"},
-        {nom: "Syary", prénom: "Aymen", cin: "K345627", parti: "Mouvement Populaire"},
-        {nom: "Morad", prénom: "Adam", cin: "M723432", parti: "Parti de l'Istiqlal"},
-    ];
-
-    let recherche = "M724710"
-    for (let i = 0; i < candidats.length; i++){
-        let c = candidats[i];
-        if(c.cin === recherche){
-            console.log(candidats[i]);
-        }
+    let cin = prompt("Entrez le CIN du candidat à rechercher :");
+    let candidat = candidats.filter(c => c.cin === cin);
+    if (candidat.length > 0) {
+        console.log("Candidat trouvé :");
+        candidat.forEach(c => console.log(candidat));
+    } else {
+        console.log("Candidat non trouvé !");
     }
 }
 
 function statistiques(){
-    if (candidats.length === 0)
-{
-    console.log("Aucun candidat.");
-    return;
+    let total = candidats.length;
+    let acceptes = 0;
+    let refuses = 0;
+    candidats.forEach(candidat => {
+        if (candidat.statut === "accepté") {
+            acceptes++;
+        } else if (candidat.statut === "refusé") {
+            refuses++;
+        }
+    });
+    console.log("Total :", total);
+    console.log("Acceptés :", acceptes);
+    console.log("Refusés :", refuses);
 }
 let totalVotes = 0
 candidats.forEach(candidat => {
@@ -91,11 +141,15 @@ candidats.forEach(candidat => {
 console.log(" STATISTIQUES ");
 console.log("Nombre de candidats :", candidats.length);
 console.log("Nombre total de votes :", totalVotes);
-}
 function supprimerUnCandidat(){
-    let candidats = [];
-    candidats.splice();
-    console.log(candidats);
+    let cin = prompt("Entrez le CIN du candidat à supprimer :");
+    let index = candidats.findIndex(c => c.cin === cin);
+    if (index !== -1){
+        candidats.filter(c => c.cin !== cin);
+        console.log("Candidat supprimé avec succès");}
+        else{
+        console.log("Candidat introuvable !");
+    }
 }
 function ajouterPlusieursCandidats(){
     let n = Number(prompt("Combien des candidats ?"));
@@ -114,6 +168,8 @@ function menu(){
             6. Ajouter plusieurs candidats
             7. Supprimer un candidat
             8. Rechercher un candidat
+            9. Modifier un candidat
+            10. Top 3 candidats
             0. Quitter`);
     choix = Number(prompt("Votre choix :"));
     switch (choix){
