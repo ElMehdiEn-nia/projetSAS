@@ -24,11 +24,12 @@ function ajouterCandidat(){
         age: age,
         electeurs: [],
     };
-    candidats.push(candidat);
-    if (candidat.cin!== cin)
+    const cinExiste = candidats.some(c => c.cin === cin);
+    if (!cinExiste) {
+        candidats.push(candidat);
         console.log("Candidat ajouté avec succès !");
-    else if(candidat.cin === cin){
-        console.log("Ce cin a déja fait,vous ne pouvez pas le utiliser encore")
+    } else {
+        console.log("Ce cin a déjà été utilisé, vous ne pouvez pas le réutiliser.");
     }
 }
 function afficherCIN(){
@@ -60,14 +61,23 @@ function voter(){
     }
 }
 function rechercherUnCandidat(){
-    let candidats = [{nom: "Ennia", prénom: "El Mehdi", cin: "M724710",},
-        {nom: "El Maslouhi", prénom: "Rim", cin: "M734834",},
-        {nom: "Toumi", prénom:"Youssef", cin: "K244765",}
+    let candidats = [
+        {nom: "Ennia", prénom: "El Mehdi", cin: "M724710", parti: "Parti de l'Istiqlal"},
+        {nom: "El Maslouhi", prénom: "Rim", cin: "M734834", parti: "Parti de l'Istiqlal"},
+        {nom: "Toumi", prénom: "Youssef", cin: "K244765", parti: "Parti de la Justice et du Développement"},
+        {nom: "Syary", prénom: "Aymen", cin: "K345627", parti: "Mouvement Populaire"},
+        {nom: "Morad", prénom: "Adam", cin: "M723432", parti: "Parti de l'Istiqlal"},
     ];
-    let recherche = "El Mehdi";
-    let candidat = candidats.find(c => c.nom === recherche);
-    console.log(candidat);
+
+    let recherche = "M724710"
+    for (let i = 0; i < candidats.length; i++){
+        let c = candidats[i];
+        if(c.cin === recherche){
+            console.log(candidats[i]);
+        }
+    }
 }
+
 function statistiques(){
     if (candidats.length === 0)
 {
