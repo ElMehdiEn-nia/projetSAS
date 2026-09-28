@@ -121,8 +121,8 @@ function rechercherUnCandidat(){
 
 function statistiques(){
     let total = candidats.length;
-    let acceptes = 0;
-    let refuses = 0;
+    let acceptes = [];
+    let refuses = [];
     candidats.forEach(candidat => {
         if (candidat.statut === "accepté") {
             acceptes++;
